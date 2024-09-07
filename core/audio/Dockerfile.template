@@ -9,7 +9,9 @@ COPY . .
 RUN install_packages \
     curl \
     git \
-    build-base
+    build-base \
+    pkg-config \
+    pulseaudio-dev
 
 # Install rustup
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
