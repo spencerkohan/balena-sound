@@ -10,7 +10,7 @@ RUN install_packages \
     curl \
     git \
     build-base \
-    pkg-config \
+    pkgconfig \
     libpulse
 
 # Install rustup
