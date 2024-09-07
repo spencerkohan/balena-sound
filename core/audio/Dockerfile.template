@@ -15,10 +15,12 @@ RUN curl -L -o /tmp/camilladsp.tar.gz https://github.com/HEnquist/camilladsp/rel
 
 # Unzip
 RUN tar -xzf /tmp/camilladsp.tar.gz -C /tmp/
+RUN ls /tmp
 
 # Move to PATH and grant permissions
 RUN mv /tmp/camilladsp /usr/local/bin/camilladsp
 RUN chmod +x /usr/local/bin/camilladsp
+RUN ls /usr/local/bin
 
 # Cleanup
 RUN rm /tmp/camilladsp.tar.gz
