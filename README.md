@@ -34,10 +34,6 @@ In order to achieve the software crossover, Camilla DSP is added to the balena-s
 
 The following modifications have been made:
 
-## 1. Install the rust toolchain
+## 1. Install Camilla DSP
 
-Camilla DSP is built using Cargo, so first we have to install the Rust toolchain.  The necessary steps have been added to `core/audio/Dockerfile.template`.
-
-It would also be possible to install CamillaDSP directly as a release binary, but I thought it would be better to compile from source, as this would make this repo more hardware-agnostic, as each release binary is tied to a specific architecture.
-
-*note: it's proving to be problematic to build camilla dsp on alpine linux on which the container is based.  I will move these efforts to a branch, and continue with just downloading the relevant binary*
+Camilla DSP has to be downloaded and installed.  The necessary steps have been added to `core/audio/Dockerfile.template`.

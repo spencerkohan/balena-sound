@@ -8,27 +8,20 @@ COPY . .
 # We use cargo to build Camilla DSP
 RUN install_packages \
     curl \
-    git \
-    build-base \
-    pkgconf \
-    libpulse \
-    alsa-lib-dev
+    tar \
 
-# Install rustup
-RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
+# Download Camilla DSP
+RUN curl -L -o /tmp/camilladsp.tar.gz https://github.com/HEnquist/camilladsp/releases/download/v2.0.3/camilladsp-linux-aarch64.tar.gz
 
-# Add rust binaries to PATH
-ENV PATH=/root/.cargo/bin:$PATH
+# Unzip
+RUN tar -xzf /tmp/camilladsp.tar.gz -C /tmp/
 
-# Verify that Rust and Cargo are installed
-RUN rustc --version && cargo --version
+# Move to PATH and grant permissions
+RUN mv /tmp/camilladsp /usr/local/bin/camilladsp
+RUN chmod +x /usr/local/bin/camilladsp
 
-# Clone the Git repository for CamillaDSP
-RUN git clone https://github.com/HEnquist/camilladsp.git /usr/src/camilladsp
-
-# Install CamillaDSP
-RUN RUSTFLAGS='-C target-feature=+neon -C target-cpu=native' cargo install --git https://github.com/HEnquist/camilladsp.git \
-    --features pulse-backend
+# Cleanup
+RUN rm /tmp/camilladsp.tar.gz
 
 # Verify that CamillaDSP is installed
 RUN camilladsp --version
