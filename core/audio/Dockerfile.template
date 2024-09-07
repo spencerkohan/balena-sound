@@ -8,7 +8,7 @@ COPY . .
 # We use cargo to build Camilla DSP
 RUN install_packages \
     curl \
-    tar \
+    tar
 
 # Download Camilla DSP
 RUN curl -L -o /tmp/camilladsp.tar.gz https://github.com/HEnquist/camilladsp/releases/download/v2.0.3/camilladsp-linux-aarch64.tar.gz
