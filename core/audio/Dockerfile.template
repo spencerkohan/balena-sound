@@ -11,7 +11,8 @@ RUN install_packages \
     git \
     build-base \
     pkgconf \
-    libpulse
+    libpulse \
+    alsa-lib-dev
 
 # Install rustup
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
