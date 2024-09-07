@@ -14,7 +14,7 @@ RUN install_packages \
     libpulse
 
 # Install rustup
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Add rust binaries to PATH
 ENV PATH=/root/.cargo/bin:$PATH
