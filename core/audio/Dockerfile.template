@@ -4,4 +4,31 @@ FROM bh.cr/balenalabs/audio-%%BALENA_ARCH%%
 WORKDIR /usr/src
 COPY . .
 
+# Install dependencies needed for Rust and rustup
+# We use cargo to build Camilla DSP
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install rustup
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# Add rust binaries to PATH
+ENV PATH=/root/.cargo/bin:$PATH
+
+# Verify that Rust and Cargo are installed
+RUN rustc --version && cargo --version
+
+# Clone the Git repository for CamillaDSP
+RUN git clone https://github.com/HEnquist/camilladsp.git /usr/src/camilladsp
+
+# Install CamillaDSP
+RUN RUSTFLAGS='-C target-feature=+neon -C target-cpu=native' cargo install --git https://github.com/HEnquist/camilladsp.git \
+    --features pulse-backend
+
+# Verify that CamillaDSP is installed
+RUN camilladsp --version
+
 CMD [ "/bin/bash", "/usr/src/start.sh" ]

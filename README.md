@@ -1,33 +1,41 @@
-![logo](https://raw.githubusercontent.com/balena-io-projects/balena-sound/master/docs/images/balenaSound-logo.png)
+This project is built on top of Balena Sound - the goal is to add a software crossover, so the raspberry pi acting as the sound server can output the bass and treble over separate channels.
 
-**Starter project enabling you to add multi-room audio streaming via Bluetooth, Airplay2, Spotify Connect and others to any old speakers or Hi-Fi using just a Raspberry Pi.**
+This is achieved by adding [CamillaDSP](https://github.com/HEnquist/camilladsp) to the audio block to implement the crossover.
 
-## Highlights
+## Use Case
 
-- **Audio source plugins**: Stream audio from your favourite music services: Bluetooth, Airplay2, Spotify Connect, UPnP and more!
-- **Multi-room synchronous playing**: Play perfectly synchronized audio on multiple devices all over your place.
-- **Extended DAC support**: Upgrade your audio quality with one of our supported DACs
+This software is built to power a 2-way bookshelf speaker, using a raspberry pi to stream audio over wifi and bluetooth.
 
-## Setup and configuration
+Thanks to Balena-sound, it supports multi-room audio similar to a Sonos.
 
-Running this app is as simple as deploying it to a balenaCloud fleet. You can do it in just one click by using the button below:
+It is built with the following components:
 
-[![deploy button](https://balena.io/deploy.svg)](https://dashboard.balena-cloud.com/deploy?repoUrl=https://github.com/balena-io-experimental/balena-sound&defaultDeviceType=raspberry-pi)
+## Speaker Drivers:
+- A Dayton Audio TD20F-4 3/4" Soft-dome Neodynium Tweeter (4 Ohm)
+- An ND105-8 4" Aluminum Cone Midpass Driver (8 Ohm)
 
-## Documentation
+## Hardware
+- A Raspberry Pi 4 serves as the audio source
+- A HiFiBerry Amp2 serves as the DAC and amp for the speaker drivers
 
-Head over to our [docs](https://balena-sound.pages.dev) for detailed installation and usage instructions, customization options, and more!
+It might be possible to run this project with a cheaper pi (i.e. pi zero) but I wanted to have plenty of headroom for prototyping.
 
-## Motivation
+## Enclosure
+The speaker enclosure is built out of MDF with  baltic bearch plywood for the front panel.
 
-![concept](https://raw.githubusercontent.com/balenalabs/balena-sound/master/docs/images/sound.png)
+The dimensions are:
+- Width: Xmm
+- Height: Xmm
+- Depth: Xmm
 
-There are many commercial solutions out there that provide functionality similar to balenaSound. Most of them though come with a premium price tag and are riddled with privacy concerns.
+# Modifications to Balena Sound
 
-balenaSound is an open source project that allows you to build your own DIY audio streaming platform without compromises. Why spend big money on hardware that might be deemed obsolete by the vendor as they see fit? With balenaSound you are in control, bring your old speakers back to life!
+In order to achieve the software crossover, Camilla DSP is added to the balena-sound audio block.  This is the component responsible for handling audio streams and routing them to the hardware.
 
-This project is in active development so if you have any feature requests or issues please submit them here on GitHub. PRs are welcome, too.
+The following modifications have been made:
 
-## Getting Help
+## 1. Install the rust toolchain
 
-If you're having any problem, please [raise an issue](https://github.com/balena-io-experimental/balena-sound/issues/new) on GitHub and we will be happy to help.
+Camilla DSP is built using Cargo, so first we have to install the Rust toolchain.  The necessary steps have been added to `core/audio/Dockerfile.template`.
+
+It would also be possible to install CamillaDSP directly as a release binary, but I thought it would be better to compile from source, as this would make this repo more hardware-agnostic, as each release binary is tied to a specific architecture.
